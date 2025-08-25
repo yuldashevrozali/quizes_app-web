@@ -1,11 +1,10 @@
 import { defineConfig, Plugin } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
-import { createServer } from "./server"; // agar local express kerak bo'lsa
+import { createServer } from "./server";
 
-// https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
-  base: "/", // 🔑 Vercel'da routing ishlashi uchun shart
+  base: "/", // 🚀 SPA routing uchun shart
   server: {
     host: "::",
     port: 8080,
@@ -15,12 +14,12 @@ export default defineConfig(({ mode }) => ({
     },
   },
   build: {
-    outDir: "dist/spa", // build natijasi shu papkaga tushadi
-    emptyOutDir: true, // eski build fayllarini o'chirib tashlaydi
+    outDir: "dist/spa",
+    emptyOutDir: true,
   },
   plugins: [
     react(),
-    mode === "development" ? expressPlugin() : null // Express faqat dev paytida ishlaydi
+    mode === "development" ? expressPlugin() : null
   ].filter(Boolean),
   resolve: {
     alias: {
@@ -33,10 +32,9 @@ export default defineConfig(({ mode }) => ({
 function expressPlugin(): Plugin {
   return {
     name: "express-plugin",
-    apply: "serve", // faqat `vite dev` paytida ishlaydi
+    apply: "serve",
     configureServer(server) {
       const app = createServer();
-      // Express middleware'ni Vite dev serverga ulash
       server.middlewares.use(app);
     },
   };
